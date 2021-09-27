@@ -86,6 +86,7 @@ def main():
             TickerName.FRED_PCE[0]: TickerName.FRED_PCE[0],
             TickerName.FRED_REALGDP[0]: TickerName.FRED_REALGDP[0],
             TickerName.FRED_UMCSENT[0]: TickerName.FRED_UMCSENT[0],
+            TickerName.FRED_UNRATE[0]: TickerName.FRED_UNRATE[0],
             TickerName.FRED_T10YIE[0]: TickerName.FRED_T10YIE[0]
             }
 
@@ -95,7 +96,7 @@ def main():
     #====================================================================================
     # Time Series
     #====================================================================================
-    start = '2018.01.01'
+    start = '2021.01.01'
     end = '2021.09.25'
 
     stock = []
@@ -107,51 +108,60 @@ def main():
             TickerName.FRED_HIGHYIELD[0]: TickerName.FRED_HIGHYIELD[0],
             TickerName.FRED_UMCSENT[0]: TickerName.FRED_UMCSENT[0],
             TickerName.FRED_HDTGPDUSQ163N[0]: TickerName.FRED_HDTGPDUSQ163N[0],
+            TickerName.FRED_UNRATE[0]: TickerName.FRED_UNRATE[0],
             TickerName.FRED_NASDAQ[0]: TickerName.FRED_NASDAQ[0]}
     df = _fdr.loadData(asset_list_stock=stock, stock_column='Close', asset_list_fred=fred, start=start, end=end)
     filled = df.fillna(method="ffill")
 
-    fig, ax = plt.subplots(nrows=5)
-    span_start = datetime(2007, 4, 1)
-    span_end = datetime(2009, 5, 1)
 
+    fig, ax = plt.subplots(nrows=4)
     # Area
+    # span_start = datetime(2007, 4, 1)
+    # span_end = datetime(2009, 5, 1)
     # for i in ax:
     #    i.axvspan(span_start, span_end, facecolor='gray', alpha=0.5)
 
     # Plot #1
     filled[[TickerName.FRED_HOUST[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_HOUST[0], ax=ax[0])
     plt.axhline(y=filled[TickerName.FRED_HOUST[0]].mean(), color='red', linestyle='--')
-    plt.title(start + " ~ " + end)
-    ax[0].legend(('HouseStarts', 'NASDAQ'))
+    plt.title(start + " ~ " + end + ": House Starts")
 
     # Plot #2
     filled[[TickerName.FRED_HDTGPDUSQ163N[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_HDTGPDUSQ163N[0],
                                                                                ax=ax[1])
     plt.axhline(y=filled[TickerName.FRED_HDTGPDUSQ163N[0]].mean(), color='red', linestyle='--')
-    plt.title(start + " ~ " + end)
-    ax[1].legend(('HouseDept To GDP', 'NASDAQ'))
+    plt.title(start + " ~ " + end + ": HouseDept To GDP")
 
     # Plot #3
     filled[[TickerName.FRED_T10Y2Y[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_T10Y2Y[0], ax=ax[2])
     plt.axhline(y=filled[TickerName.FRED_T10Y2Y[0]].mean(), color='red', linestyle='--')
-    plt.title(start + " ~ " + end)
-    ax[2].legend(('Y10-Y2', 'NASDAQ'))
+    plt.title(start + " ~ " + end + ": Y10 - Y2")
 
     # Plot #4
     filled[[TickerName.FRED_UMCSENT[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_UMCSENT[0],
                                                                          ax=ax[3])
     plt.axhline(y=filled[TickerName.FRED_UMCSENT[0]].mean(), color='red', linestyle='--')
-    plt.title(start + " ~ " + end)
-    ax[3].legend(('Consumer Sentiment', 'NASDAQ'))
+    plt.title(start + " ~ " + end + ": Sentiment")
 
-    # Plot #5
+    ###############################################################
+    fig, ax = plt.subplots(nrows=4)
+    # Plot #1
     filled[[TickerName.FRED_HIGHYIELD[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_HIGHYIELD[0],
-                                                                           ax=ax[4])
+                                                                           ax=ax[0])
     plt.axhline(y=filled[TickerName.FRED_HIGHYIELD[0]].mean(), color='red', linestyle='--')
-    plt.title(start + " ~ " + end)
-    ax[4].legend(('High Yield', 'NASDAQ'))
+    plt.title(start + " ~ " + end + ": High Yield")
 
+    # Plot #2
+    filled[[TickerName.FRED_UNRATE[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_UNRATE[0],
+                                                                           ax=ax[1])
+    plt.axhline(y=filled[TickerName.FRED_UNRATE[0]].mean(), color='red', linestyle='--')
+    plt.title(start + " ~ " + end + ": UNRATE")
+
+    # Plot #3
+    filled[[TickerName.FRED_PCE[0], TickerName.FRED_NASDAQ[0]]].plot(secondary_y=TickerName.FRED_PCE[0],
+                                                                           ax=ax[2])
+    plt.axhline(y=filled[TickerName.FRED_PCE[0]].mean(), color='red', linestyle='--')
+    plt.title(start + " ~ " + end + ": UNRATE")
     plt.show()
 
 
